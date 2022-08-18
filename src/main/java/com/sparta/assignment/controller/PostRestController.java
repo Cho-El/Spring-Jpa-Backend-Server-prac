@@ -2,6 +2,8 @@ package com.sparta.assignment.controller;
 
 import com.sparta.assignment.models.Post;
 import com.sparta.assignment.models.PostRepository;
+import com.sparta.assignment.models.dto.PasswordCheckResponseDto;
+import com.sparta.assignment.models.dto.PasswordRequestDto;
 import com.sparta.assignment.models.dto.PostItemDto;
 import com.sparta.assignment.models.dto.PostRequestDto;
 import com.sparta.assignment.service.PostService;
@@ -50,6 +52,9 @@ public class PostRestController {
         postRepository.deleteById(id);
         return id;
     }
-
     // 게시글 비밀번호 확인
+    @PostMapping("api/posts/{id}")
+    public PasswordCheckResponseDto passwordCheck(@PathVariable Long id, @RequestBody PasswordRequestDto requestDto){
+        return new PasswordCheckResponseDto(postService.passwordCheck(id, requestDto));
+    }
 }
