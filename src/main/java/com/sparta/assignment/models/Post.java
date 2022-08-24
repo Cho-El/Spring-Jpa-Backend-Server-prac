@@ -1,6 +1,9 @@
 package com.sparta.assignment.models;
 
-import com.sparta.assignment.models.dto.PostRequestDto;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sparta.assignment.dto.PostRequestDto;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,37 +11,39 @@ import javax.persistence.*;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
-public class Post extends Timestamped{
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class Post extends Timestamped {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
+    private String content;
+
     @Column(nullable = false)
-    private String username;
+    private String author;
+
+    @JsonIgnore
     @Column(nullable = false)
     private String password;
-    @Column(nullable = false)
-    private String contents;
 
-    public Post(PostRequestDto requestDto){
-        this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
-        this.contents = requestDto.getContents();
+    public Post(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.author = postRequestDto.getAuthor();
+        this.password = postRequestDto.getPassword();
     }
-    public Post(String title, String username, String password, String contents){
-        this.title = title;
-        this.username = username;
-        this.password = password;
-        this.contents = contents;
+
+    public void update(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.content = postRequestDto.getContent();
+        this.author = postRequestDto.getAuthor();
+        this.password = postRequestDto.getPassword();
     }
-    public void update(PostRequestDto requestDto){
-        this.title = requestDto.getTitle();
-        this.username = requestDto.getUsername();
-        this.password = requestDto.getPassword();
-        this.contents = requestDto.getContents();
-    }
+
 }

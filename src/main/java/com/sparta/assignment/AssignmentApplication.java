@@ -1,15 +1,8 @@
 package com.sparta.assignment;
 
-import com.sparta.assignment.models.Post;
-import com.sparta.assignment.models.PostRepository;
-import com.sparta.assignment.service.PostService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-
-import java.util.List;
 
 @EnableJpaAuditing
 @SpringBootApplication
