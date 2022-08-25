@@ -1,6 +1,5 @@
 package com.sparta.assignment.security;
 
-import com.sparta.assignment.models.UserRoleEnum;
 import com.sparta.assignment.models.Users;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

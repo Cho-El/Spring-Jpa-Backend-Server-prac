@@ -1,13 +1,11 @@
 package com.sparta.assignment.dto;
 
+import com.sparta.assignment.models.Post;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class PostRequestDto {
-    private String title;
+public class CommentRequestDto {
     private String content;
-    private String author;
-    private String password;
 }

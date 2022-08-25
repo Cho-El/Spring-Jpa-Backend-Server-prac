@@ -3,9 +3,12 @@ package com.sparta.assignment.service;
 import com.sparta.assignment.dto.PasswordDto;
 import com.sparta.assignment.dto.ResponseDto;
 import com.sparta.assignment.models.Post;
+import com.sparta.assignment.models.Users;
 import com.sparta.assignment.repository.PostRepository;
 import com.sparta.assignment.dto.PostRequestDto;
+import com.sparta.assignment.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +20,7 @@ import java.util.Optional;
 public class PostService {
 
     private final PostRepository postRepository;
-
+    private final UserRepository userRepository;
     @Transactional
     public ResponseDto<?> createPost(PostRequestDto requestDto) {
 
@@ -89,7 +92,6 @@ public class PostService {
 
         return ResponseDto.success(true);
     }
-
 
 }
 

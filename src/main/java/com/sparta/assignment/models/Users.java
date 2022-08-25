@@ -1,6 +1,7 @@
 package com.sparta.assignment.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -32,6 +33,7 @@ public class Users extends Timestamped{
     @Enumerated(value = EnumType.STRING) // Enum을 스트링으로
     private UserRoleEnum role;
 
+    @Builder
     public Users(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
