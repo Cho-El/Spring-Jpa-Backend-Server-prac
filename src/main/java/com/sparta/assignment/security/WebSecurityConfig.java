@@ -1,6 +1,8 @@
 package com.sparta.assignment.security;
 
 
+import com.sparta.assignment.jwt.TokenProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -8,12 +10,15 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
 @EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+    private final TokenProvider tokenProvider;
 
     @Bean
     public BCryptPasswordEncoder encodePassword() {
@@ -41,26 +46,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     // 그 외 어떤 요청이든 '인증'
                     .anyRequest().authenticated()
                 .and()
-                    // [로그인 기능]
-                    .formLogin()
-                    // 로그인 View 제공 (GET /user/login)
-                    .loginPage("/user/login")
-                    // 로그인 처리 (POST /user/login)
-                    .loginProcessingUrl("/user/login")
-                    // 로그인 처리 후 성공 시 URL
-                    .defaultSuccessUrl("/")
-                    // 로그인 처리 후 실패 시 URL
-                    .failureUrl("/user/login?error")
-                    .permitAll()
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                    // [로그아웃 기능]
-                    .logout()
-                    // 로그아웃 요청 처리 URL
-                    .logoutUrl("/user/logout")
-                    .permitAll()
+                    .authorizeRequests()
+                    .antMatchers("/api/user/**").permitAll()
+                    .antMatchers("/api/post/**").permitAll()  //인증이 필요한 곳은 auth로 구분했다.
+    //                  .antMatchers("/api/**").permitAll()
+                .anyRequest().authenticated()   // 나머지 API 는 전부 인증 필요
                 .and()
                     .exceptionHandling()
                     // "접근 불가" 페이지 URL 설정
-                    .accessDeniedPage("/forbidden.html");
+                    .accessDeniedPage("/forbidden.html")
+                // JwtFilter 를 addFilterBefore 로 등록했던 JwtSecurityConfig 클래스를 적용
+                .and()
+                    .apply(new JwtSecurityConfig(tokenProvider));
     }
 }
