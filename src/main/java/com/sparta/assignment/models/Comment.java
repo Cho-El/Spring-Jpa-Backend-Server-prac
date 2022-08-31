@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Getter
 @Setter
@@ -24,6 +25,7 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private String username;
 
+    // fjeijfiejfie
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "POST_ID", nullable = false)
